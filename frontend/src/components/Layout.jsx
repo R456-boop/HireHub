@@ -1,0 +1,14 @@
+import Navbar from "./Navbar";
+function Layout({children})
+{
+    return  ( 
+    <>
+     <Navbar/>
+     <main>
+        {children}
+     </main>
+     <footer/>
+        </>
+    );
+}
+export default Layout;

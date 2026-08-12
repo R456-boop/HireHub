@@ -1,0 +1,156 @@
+import User from "../models/user.models.js"
+import jwt from "jsonwebtoken";
+import bcrypt from "bcrypt";
+
+
+export const register=async(req,res)=>{
+   try {
+    const {fullname,email,password,role,contact}=req.body;
+      
+    if(!fullname||!email||!password||!role||!contact)
+        return res.status(400).json({
+    message:"something is missing in the user inputs",success:false})
+
+
+// check the user if previously registered
+      const existinguser= await User.findOne({email});
+    if(existinguser)
+    {
+        return res.status(400).json({
+    message:"user already registered previoulsy"});
+        }
+
+const hashedpassword=await bcrypt.hash(password,10);
+
+    // save user in mongodb
+    const user=await User.create({
+        fullname,
+        email,
+        contact,
+        password: hashedpassword,
+        role
+    });
+    const token=jwt.sign(
+        {
+            userId:user._id
+
+        },
+        process.env.JWT_SECRET,
+        {
+            expiresIn:"3d"
+        }
+    );
+    return res.status(201)
+    .cookie(
+        "token",token,{
+            httpOnly:true,
+            maxAge:72*60*60*1000
+        })
+    .json({
+        message:"user registered successfully",
+        success:true,
+   
+    user:{
+        _id:user._id,
+        fullname:user.fullname,
+        email:user.email,
+        role:user.role,
+        contact:user.contact
+    }
+ });
+  
+ 
+  
+   } catch (error) {
+    console.log("error came in register api :",error);
+    return res.status(500).json({
+        message:"internal server error",
+        success:false
+    })
+   }
+}
+export const login= async(req,res)=>{
+    try {
+        
+        const{email,password}=req.body;
+if(!email||!password)
+{
+    return res.status(400).json({
+message:"something is missing",
+success:false});
+    }
+
+
+const user=await User.findOne({email});
+if(!user){
+    return res.status(400).json({
+message:"incorrect email entered",
+success:false});
+    }
+
+
+    const ispasswordcorrect=await bcrypt.compare(password,user.password);
+    if(!ispasswordcorrect)
+    {
+        return res.status(400).json({
+            message:"incorrect email or password",
+            success: false
+        })
+    }
+
+    const token=jwt.sign(
+        {
+            userId:user._id
+        },
+        process.env.JWT_SECRET,
+        {expiresIn:"3d"}
+    );
+
+
+  
+
+
+    console.log(token);
+    
+        console.log(email);
+        console.log(password);
+
+
+      return res.status(200)
+.cookie("token", token, {
+    httpOnly: true,
+    maxAge: 72 * 60 * 60 * 1000
+})
+.json({
+    message: `welcome ${user.fullname}`,
+    success: true,
+
+    user: {
+        _id: user._id,
+        fullname: user.fullname,
+        email: user.email,
+        role: user.role,
+        contact: user.contact
+    }
+});
+
+        
+
+    } catch (error) {
+        console.log("erro while login or receiving dataa: ",error);
+        
+    }
+}
+
+export   const logout= async(req,res)=>{
+    return res
+    .status(200)
+    .cookie("token","",{
+        maxAge:0})
+        .json({
+            message:"logged put successfully",
+            success:true
+        });
+}
+
+
