@@ -16,7 +16,7 @@ function JobDetails() {
   const { id } = useParams();
 
   const [job, setJob] = useState(null);
-  const [loading ,setloading]=useState(true);
+  const [loading ,setLoading]=useState(true);
 
 useEffect(() => {
   const getJob = async () => {
