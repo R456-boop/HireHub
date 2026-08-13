@@ -6,7 +6,7 @@ import bcrypt from "bcrypt";
 export const register=async(req,res)=>{
    try {
     const {fullname,email,password,role,contact}=req.body;
-    
+
     const contactRegex = /^[0-9]{10}$/;
 
 if (!contactRegex.test(contact)) {
@@ -61,11 +61,12 @@ const hashedpassword=await bcrypt.hash(password,10);
         }
     );
     return res.status(201)
-    .cookie(
-        "token",token,{
-            httpOnly:true,
-            maxAge:72*60*60*1000
-        })
+   .cookie("token", token, {
+    httpOnly: true,
+    secure: true,
+    sameSite: "none",
+    maxAge: 72 * 60 * 60 * 1000
+})
     .json({
         message:"user registered successfully",
         success:true,
@@ -89,6 +90,11 @@ const hashedpassword=await bcrypt.hash(password,10);
     })
    }
 }
+
+
+
+
+
 export const login= async(req,res)=>{
     try {
         
@@ -127,20 +133,19 @@ success:false});
     );
 
 
-  
 
-
-    console.log(token);
-    
-        console.log(email);
-        console.log(password);
 
 
       return res.status(200)
+
+
 .cookie("token", token, {
     httpOnly: true,
+    secure: true,
+    sameSite: "none",
     maxAge: 72 * 60 * 60 * 1000
 })
+
 .json({
     message: `welcome ${user.fullname}`,
     success: true,
@@ -165,8 +170,12 @@ success:false});
 export   const logout= async(req,res)=>{
     return res
     .status(200)
-    .cookie("token","",{
-        maxAge:0})
+   .cookie("token", "", {
+    httpOnly: true,
+    secure: true,
+    sameSite: "none",
+    maxAge: 0
+})
         .json({
             message:"logged put successfully",
             success:true

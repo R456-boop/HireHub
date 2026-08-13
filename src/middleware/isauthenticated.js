@@ -1,13 +1,39 @@
 import jwt from "jsonwebtoken";
 
+export const isAuthenticated = async (req, res, next) => {
+    try {
 
-export const isAuthenticated=async(req,res,next)=>{
-    const token= req.cookies.token;
+        const token = req.cookies.token;
 
-    if(!token)
+        if (!token) {
+            return res.status(401).json({
+                message: "user is not authenticated",
+                success: false
+            });
+        }
+
+        const decode = jwt.verify(
+            token,
+            process.env.JWT_SECRET
+        );
+
+        req.id = decode.userId;
+
+        next();
+
+    } catch (error) {
+
+        console.log("Authentication error:", error);
+
         return res.status(401).json({
-    message:"user is not authenticated",
-success:false});
+            message: "Invalid or expired token",
+            success: false
+        });
+    }
+};
+
+
+
 
 //Why do we call next()?
 
@@ -28,10 +54,3 @@ success:false});
 // tells Express:
 
 // "Everything is okay. Continue to the next function."
-
-const decode=jwt.verify(token,process.env.JWT_SECRET);
-console.log(decode);
-req.id=decode.userId;
-next();
-
-} 

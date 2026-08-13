@@ -10,10 +10,12 @@ import userRoute from "./routes/user.routes.js";
 const app = express();
 
 app.use(
+
   cors({
     origin: "https://hire-hub-rust.vercel.app",
     credentials: true,
   })
+  
 );
 
 app.use(express.json());
