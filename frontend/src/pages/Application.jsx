@@ -24,69 +24,64 @@ function Application() {
     getAppliedJobs();
   }, []);
 
-  return (
-    <Layout>
-      <div className="mx-auto max-w-5xl px-4 py-10">
+ return (
+  <Layout>
+    <div className="min-h-screen bg-[#0b0b0b] px-6 py-12 text-white">
 
-        <h1 className="text-3xl font-bold">
+      <div className="mx-auto max-w-6xl">
+
+        <h1 className="text-4xl font-bold text-[#9b5cff]">
           My Applications
         </h1>
 
-        <p className="mt-2 text-gray-600">
+        <p className="mt-2 text-lg text-[#dfff4f]">
           Jobs you have applied for.
         </p>
 
-        <div className="mt-8 space-y-4">
+        <div className="mt-10 space-y-6">
 
-          {applications.length > 0 ? (
+          {applications.length === 0 ? (
+            <p className="text-gray-400">
+              You have not applied for any jobs yet.
+            </p>
+          ) : (
             applications.map((application) => (
               <div
                 key={application._id}
-                className="rounded-lg border bg-white p-5 shadow-sm"
+                className="rounded-2xl border border-[#292929] bg-[#111111] p-6 shadow-lg"
               >
 
-                <h2 className="text-xl font-semibold">
-                  {application.job?.title}
+                <h2 className="text-2xl font-bold text-white">
+                  {application.job.title}
                 </h2>
 
-                <p className="mt-2 text-gray-600">
-                  {application.job?.location}
+                <p className="mt-3 text-gray-300">
+                  {application.job.location}
                 </p>
 
-                <p className="mt-1 text-gray-600">
-                  {application.job?.jobType}
+                <p className="mt-2 text-gray-300">
+                  {application.job.jobType}
                 </p>
 
-               <div className="mt-4">
-  <span className="text-sm text-gray-600">
-    Status:
-  </span>
+                <p className="mt-4 text-gray-300">
+                  Status:
 
-  <span
-    className={`ml-2 rounded-full px-3 py-1 text-sm font-semibold ${
-      application.status === "accepted"
-        ? "bg-green-100 text-green-700"
-        : application.status === "rejected"
-        ? "bg-red-100 text-red-700"
-        : "bg-yellow-100 text-yellow-700"
-    }`}
-  >
-    {application.status}
-  </span>
-</div>
+                  <span className="ml-2 rounded-full bg-[#dfff4f] px-4 py-1 text-sm font-semibold text-black">
+                    {application.status}
+                  </span>
+                </p>
 
               </div>
             ))
-          ) : (
-            <p className="text-gray-500">
-              You haven't applied for any jobs yet.
-            </p>
           )}
 
         </div>
 
       </div>
-    </Layout>
+
+    </div>
+  </Layout>
+
   );
 }
 

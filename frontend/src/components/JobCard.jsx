@@ -11,7 +11,7 @@ function JobCard({
 }) {
   return (
     <Link to={`/jobs/${id}`}>
-      <div className="rounded-xl border bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-lg">
+      <div className="rounded-xl border bg-[#111111] p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-lg">
 
         <h2 className="text-xl font-semibold">
           {title}
