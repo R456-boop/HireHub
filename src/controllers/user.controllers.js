@@ -6,6 +6,17 @@ import bcrypt from "bcrypt";
 export const register=async(req,res)=>{
    try {
     const {fullname,email,password,role,contact}=req.body;
+    
+    const contactRegex = /^[0-9]{10}$/;
+
+if (!contactRegex.test(contact)) {
+    return res.status(400).json({
+        message: "Contact number must contain exactly 10 digits",
+        success: false
+    });
+}
+
+
     const passwordRegex = /^(?=.*[@#&])(?=.*[0-9]).+$/;
     if(!passwordRegex.test(password))
     {

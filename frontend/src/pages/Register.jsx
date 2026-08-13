@@ -27,6 +27,12 @@ function Register() {
     alert("Password must contain at least one @, #, or & and one number");
     return;
   }
+  const contactRegex = /^[0-9]{10}$/;
+
+if (!contactRegex.test(contact)) {
+  alert("Contact number must contain exactly 10 digits");
+  return;
+}
 
 
     try {
