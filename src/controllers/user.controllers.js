@@ -6,6 +6,15 @@ import bcrypt from "bcrypt";
 export const register=async(req,res)=>{
    try {
     const {fullname,email,password,role,contact}=req.body;
+    const passwordRegex = /^(?=.*[@#&])(?=.*[0-9]).+$/;
+    if(!passwordRegex.test(password))
+    {
+        return res.status(400).json({
+            message:"Password must contain at least one @,#,or & and one number  ",
+            sucess:false
+        })
+    }
+
       
     if(!fullname||!email||!password||!role||!contact)
         return res.status(400).json({

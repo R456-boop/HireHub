@@ -21,6 +21,12 @@ function Register() {
 
   const registerHandler = async (e) => {
     e.preventDefault();
+  const passwordRegex = /^(?=.*[@#&])(?=.*[0-9]).+$/;
+
+  if (!passwordRegex.test(password)) {
+    alert("Password must contain at least one @, #, or & and one number");
+    return;
+  }
 
 
     try {
@@ -37,15 +43,14 @@ function Register() {
 
       console.log("Register response:", response.data);
       dispatch(setUser(response.data.user));
-      navigate("/");
-
-      if (response.data.success) {
-        alert(response.data.message);
-
-        navigate("/login");
+ if (response.data.success) {
+  dispatch(setUser(response.data.user));
+  alert(response.data.message);
+  navigate("/");
+}
       }
 
-    } catch (error) {
+     catch (error) {
       console.log("Register error:", error);
 
       alert(
