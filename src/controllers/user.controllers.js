@@ -76,7 +76,7 @@ export const register = async (req, res) => {
             .cookie("token", token, {
                 httpOnly: true,
                 secure: true,
-                sameSite: "none",
+                sameSite: "lax",
                 maxAge: 72 * 60 * 60 * 1000
             })
             .json({
@@ -160,7 +160,7 @@ export const login = async (req, res) => {
             .cookie("token", token, {
                 httpOnly: true,
                 secure: true,
-                sameSite: "none",
+                sameSite: "lax",
                 maxAge: 72 * 60 * 60 * 1000
             })
             .json({
@@ -199,7 +199,7 @@ export const logout = async (req, res) => {
         .cookie("token", "", {
             httpOnly: true,
             secure: true,
-            sameSite: "none",
+            sameSite: "lax",
             maxAge: 0
         })
         .json({
@@ -213,42 +213,40 @@ export const logout = async (req, res) => {
 // ================= UPDATE PROFILE =================
 
 export const updateProfile = async (req, res) => {
-
     try {
-
-        // req.id comes from authentication middleware
-        const userId = req.id;
 
         const { fullname, email, contact } = req.body;
 
-
-        // check if fields are empty
         if (!fullname || !email || !contact) {
-
             return res.status(400).json({
                 message: "All fields are required",
                 success: false
             });
-
         }
 
-
-        // check contact number
         const contactRegex = /^[0-9]{10}$/;
 
         if (!contactRegex.test(contact)) {
-
             return res.status(400).json({
                 message: "Contact number must contain exactly 10 digits",
                 success: false
             });
-
         }
 
+        const existingUser = await User.findOne({
+            email,
+            _id: { $ne: req.id }
+        });
 
-        // update user in MongoDB
+        if (existingUser) {
+            return res.status(400).json({
+                message: "Email already belongs to another user",
+                success: false
+            });
+        }
+
         const user = await User.findByIdAndUpdate(
-            userId,
+            req.id,
             {
                 fullname: fullname,
                 email: email,
@@ -260,35 +258,18 @@ export const updateProfile = async (req, res) => {
             }
         ).select("-password");
 
-
-        // user not found
         if (!user) {
-
             return res.status(404).json({
                 message: "User not found",
                 success: false
             });
-
         }
 
-
-        // send updated user
         return res.status(200).json({
-
             message: "Profile updated successfully",
-
             success: true,
-
-            user: {
-                _id: user._id,
-                fullname: user.fullname,
-                email: user.email,
-                role: user.role,
-                contact: user.contact
-            }
-
+            user
         });
-
 
     } catch (error) {
 

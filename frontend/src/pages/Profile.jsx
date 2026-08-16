@@ -1,4 +1,5 @@
-import { useSelector } from "react-redux";
+import { useSelector,useDispatch } from "react-redux";
+import { setUser } from "@/redux/authSlice";
 import Layout from "../components/Layout";
 import {
   User,
@@ -11,9 +12,45 @@ import {
   Bell,
   Building2,
 } from "lucide-react";
-
+import { useState,useEffect } from "react";
+import axiosInstance from "../utils/axios";
 function Profile() {
   const user = useSelector((state) => state.auth.user);
+const dispatch =useDispatch();
+  const [fullname, setFullname] = useState("");
+  const [email, setEmail] = useState("");
+  const [contact, setContact] = useState("");
+
+  useEffect(() => {
+    if (user) {
+      setFullname(user.fullname || "");
+      setEmail(user.email || "");
+      setContact(user.contact || "");
+    }
+  }, [user]);
+
+const updateProfile = async () => {
+  console.log("UPDATE BUTTON CLICKED");
+
+  try {
+    const response = await axiosInstance.put(
+      "/api/v1/user/profile",
+      { fullname, email, contact }
+    );
+
+    console.log("UPDATE RESPONSE:", response.data);
+
+    if (response.data.success) {
+      dispatch(setUser(response.data.user)); // <-- ADD THIS
+      alert("Profile updated successfully!");
+    }
+
+  } catch (error) {
+    console.log("UPDATE PROFILE ERROR:", error.response?.data || error);
+    alert(error.response?.data?.message || "Failed to update profile");
+  }
+};
+        
 
   return (
     <Layout>
@@ -225,8 +262,8 @@ function Profile() {
 
                       <input
                         type="text"
-                        value={user?.fullname || ""}
-                        readOnly
+                        value={fullname }
+                        onChange={(e) => setFullname(e.target.value)}
                         className="w-full rounded-lg border border-gray-300 bg-white py-3 pl-10 pr-4 text-sm text-gray-700 outline-none focus:border-blue-500"
                       />
 
@@ -248,12 +285,12 @@ function Profile() {
 
                       <Mail className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
 
-                      <input
-                        type="email"
-                        value={user?.email || ""}
-                        readOnly
-                        className="w-full rounded-lg border border-gray-300 bg-white py-3 pl-10 pr-4 text-sm text-gray-700 outline-none focus:border-blue-500"
-                      />
+                    <input
+  type="email"
+  value={email}
+  onChange={(e) => setEmail(e.target.value)}
+  className="w-full rounded-lg border border-gray-300 bg-white py-3 pl-10 pr-4 text-sm text-gray-700 outline-none focus:border-blue-500"
+/>
 
                     </div>
 
@@ -273,12 +310,12 @@ function Profile() {
 
                       <Phone className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
 
-                      <input
-                        type="text"
-                        value={user?.contact || ""}
-                        readOnly
-                        className="w-full rounded-lg border border-gray-300 bg-white py-3 pl-10 pr-4 text-sm text-gray-700 outline-none focus:border-blue-500"
-                      />
+                    <input
+  type="text"
+  value={contact}
+  onChange={(e) => setContact(e.target.value)}
+  className="w-full rounded-lg border border-gray-300 bg-white py-3 pl-10 pr-4 text-sm text-gray-700 outline-none focus:border-blue-500"
+/>
 
                     </div>
 
@@ -365,7 +402,10 @@ function Profile() {
 
                   <button
                     className="rounded-lg bg-blue-600 px-7 py-3 text-sm font-semibold text-white transition hover:bg-blue-700"
-                  >
+                 type="button"
+                 onClick={updateProfile}
+                
+                 >
                     Update Profile
                   </button>
 

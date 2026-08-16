@@ -12,7 +12,10 @@ const app = express();
 app.use(
 
   cors({
-    origin: "https://hire-hub-rust.vercel.app",
+  origin: [
+      "http://localhost:5173",
+      "https://hire-hub-rust.vercel.app",
+    ],
     credentials: true,
   })
   
