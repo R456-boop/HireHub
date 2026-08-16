@@ -1,90 +1,374 @@
 import { useSelector } from "react-redux";
 import Layout from "../components/Layout";
+import {
+  User,
+  Mail,
+  Phone,
+  Briefcase,
+  MapPin,
+  Shield,
+  FileText,
+  Bell,
+  Building2,
+} from "lucide-react";
 
 function Profile() {
-
   const user = useSelector((state) => state.auth.user);
 
   return (
     <Layout>
 
-      <div className="min-h-screen bg-[#0b0b0b] px-6 py-12 text-white">
+      <div className="min-h-screen bg-[#f5f7fb] px-4 py-8 sm:px-8">
 
-        <div className="mx-auto max-w-6xl">
+        <div className="mx-auto max-w-7xl">
 
-          {/* HEADING */}
+          {/* ================= HEADER ================= */}
 
-          <h1 className="text-4xl font-bold tracking-tight text-[#9b5cff]">
-            My Profile
-          </h1>
+          <div className="mb-8">
 
-          <p className="mt-2 text-lg text-[#dfff4f]">
-            View your account information and role.
-          </p>
+            <p className="text-sm font-medium text-gray-500">
+              Profile
+            </p>
 
+            <h1 className="mt-2 text-3xl font-bold text-gray-900">
+              Profile
+            </h1>
 
-          {/* PROFILE CARD */}
-
-          <div className="mt-10 rounded-2xl border border-[#292929] bg-[#111111] p-8 shadow-[0_10px_40px_rgba(0,0,0,0.4)]">
-
-            <div className="grid gap-7 md:grid-cols-2">
+          </div>
 
 
-              {/* FULL NAME */}
+          {/* ================= MAIN PROFILE AREA ================= */}
 
-              <div>
+          <div className="grid gap-6 lg:grid-cols-[280px_1fr]">
 
-                <label className="mb-2 block text-sm font-semibold text-white">
-                  Full Name
-                </label>
 
-                <div className="rounded-xl border border-[#333333] bg-[#181818] px-4 py-3 text-gray-200">
-                  {user?.fullname || "Not available"}
+            {/* ================= LEFT PROFILE CARD ================= */}
+
+            <div className="rounded-xl border border-gray-200 bg-white p-5 shadow-sm">
+
+              {/* Profile picture */}
+
+              <div className="flex flex-col items-center">
+
+                <div className="relative">
+
+                  <img
+                    src="/profile.jpg"
+                    alt="Profile"
+                    className="h-28 w-28 rounded-full border-4 border-white object-cover shadow-md"
+                  />
+
+                  <div className="absolute bottom-1 right-1 flex h-6 w-6 items-center justify-center rounded-full bg-blue-600 text-white">
+                    ✓
+                  </div>
+
+                </div>
+
+
+                <h2 className="mt-4 text-lg font-bold text-gray-900">
+                  {user?.fullname || "User"}
+                </h2>
+
+                <p className="mt-1 text-sm text-gray-500">
+                  {user?.role || "Student"}
+                </p>
+
+              </div>
+
+
+              {/* Divider */}
+
+              <div className="my-6 border-t border-gray-200"></div>
+
+
+              {/* Profile statistics */}
+
+              <div className="space-y-4">
+
+                <div className="flex items-center justify-between">
+
+                  <span className="text-sm text-gray-500">
+                    Applications
+                  </span>
+
+                  <span className="font-semibold text-blue-600">
+                    0
+                  </span>
+
+                </div>
+
+
+                <div className="flex items-center justify-between">
+
+                  <span className="text-sm text-gray-500">
+                    Profile completion
+                  </span>
+
+                  <span className="font-semibold text-green-600">
+                    80%
+                  </span>
+
+                </div>
+
+
+                <div className="flex items-center justify-between">
+
+                  <span className="text-sm text-gray-500">
+                    Role
+                  </span>
+
+                  <span className="font-semibold text-gray-900">
+                    {user?.role || "Student"}
+                  </span>
+
                 </div>
 
               </div>
 
 
-              {/* EMAIL */}
+              {/* Public profile button */}
 
-              <div>
+              <button
+                className="mt-7 w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm font-medium text-gray-700 transition hover:bg-gray-50"
+              >
+                View Public Profile
+              </button>
 
-                <label className="mb-2 block text-sm font-semibold text-white">
-                  Email
-                </label>
+            </div>
 
-                <div className="rounded-xl border border-[#333333] bg-[#181818] px-4 py-3 text-gray-200">
-                  {user?.email || "Not available"}
-                </div>
+
+
+            {/* ================= RIGHT SIDE ================= */}
+
+            <div className="rounded-xl border border-gray-200 bg-white shadow-sm">
+
+
+              {/* Tabs */}
+
+              <div className="flex overflow-x-auto border-b border-gray-200">
+
+                <button className="flex items-center gap-2 border-b-2 border-blue-600 px-5 py-4 text-sm font-semibold text-blue-600">
+
+                  <User className="h-4 w-4" />
+
+                  Account Settings
+
+                </button>
+
+
+                <button className="flex items-center gap-2 px-5 py-4 text-sm text-gray-500 hover:text-gray-900">
+
+                  <Building2 className="h-4 w-4" />
+
+                  Company Settings
+
+                </button>
+
+
+                <button className="flex items-center gap-2 px-5 py-4 text-sm text-gray-500 hover:text-gray-900">
+
+                  <FileText className="h-4 w-4" />
+
+                  Documents
+
+                </button>
+
+
+                <button className="flex items-center gap-2 px-5 py-4 text-sm text-gray-500 hover:text-gray-900">
+
+                  <Shield className="h-4 w-4" />
+
+                  Security
+
+                </button>
+
+
+                <button className="flex items-center gap-2 px-5 py-4 text-sm text-gray-500 hover:text-gray-900">
+
+                  <Bell className="h-4 w-4" />
+
+                  Notifications
+
+                </button>
 
               </div>
 
 
-              {/* PHONE */}
 
-              <div>
+              {/* ================= ACCOUNT FORM ================= */}
 
-                <label className="mb-2 block text-sm font-semibold text-white">
-                  Phone Number
-                </label>
+              <div className="p-6 sm:p-8">
 
-                <div className="rounded-xl border border-[#333333] bg-[#181818] px-4 py-3 text-gray-200">
-                  {user?.contact || "Not available"}
+                <h2 className="text-xl font-bold text-gray-900">
+                  Account Settings
+                </h2>
+
+                <p className="mt-1 text-sm text-gray-500">
+                  Manage your personal information and account details.
+                </p>
+
+
+                <div className="mt-8 grid gap-6 md:grid-cols-2">
+
+
+                  {/* FIRST NAME */}
+
+                  <div>
+
+                    <label className="mb-2 block text-sm font-semibold text-gray-700">
+                      Full Name
+                    </label>
+
+                    <div className="relative">
+
+                      <User className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
+
+                      <input
+                        type="text"
+                        value={user?.fullname || ""}
+                        readOnly
+                        className="w-full rounded-lg border border-gray-300 bg-white py-3 pl-10 pr-4 text-sm text-gray-700 outline-none focus:border-blue-500"
+                      />
+
+                    </div>
+
+                  </div>
+
+
+
+                  {/* EMAIL */}
+
+                  <div>
+
+                    <label className="mb-2 block text-sm font-semibold text-gray-700">
+                      Email Address
+                    </label>
+
+                    <div className="relative">
+
+                      <Mail className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
+
+                      <input
+                        type="email"
+                        value={user?.email || ""}
+                        readOnly
+                        className="w-full rounded-lg border border-gray-300 bg-white py-3 pl-10 pr-4 text-sm text-gray-700 outline-none focus:border-blue-500"
+                      />
+
+                    </div>
+
+                  </div>
+
+
+
+                  {/* PHONE */}
+
+                  <div>
+
+                    <label className="mb-2 block text-sm font-semibold text-gray-700">
+                      Phone Number
+                    </label>
+
+                    <div className="relative">
+
+                      <Phone className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
+
+                      <input
+                        type="text"
+                        value={user?.contact || ""}
+                        readOnly
+                        className="w-full rounded-lg border border-gray-300 bg-white py-3 pl-10 pr-4 text-sm text-gray-700 outline-none focus:border-blue-500"
+                      />
+
+                    </div>
+
+                  </div>
+
+
+
+                  {/* ROLE */}
+
+                  <div>
+
+                    <label className="mb-2 block text-sm font-semibold text-gray-700">
+                      Role
+                    </label>
+
+                    <div className="relative">
+
+                      <Briefcase className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
+
+                      <input
+                        type="text"
+                        value={user?.role || ""}
+                        readOnly
+                        className="w-full rounded-lg border border-gray-300 bg-gray-50 py-3 pl-10 pr-4 text-sm text-gray-700 outline-none"
+                      />
+
+                    </div>
+
+                  </div>
+
+
+
+                  {/* LOCATION */}
+
+                  <div>
+
+                    <label className="mb-2 block text-sm font-semibold text-gray-700">
+                      Location
+                    </label>
+
+                    <div className="relative">
+
+                      <MapPin className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
+
+                      <input
+                        type="text"
+                        placeholder="Enter your location"
+                        className="w-full rounded-lg border border-gray-300 bg-white py-3 pl-10 pr-4 text-sm text-gray-700 outline-none placeholder:text-gray-400 focus:border-blue-500"
+                      />
+
+                    </div>
+
+                  </div>
+
+
+
+                  {/* ACCOUNT STATUS */}
+
+                  <div>
+
+                    <label className="mb-2 block text-sm font-semibold text-gray-700">
+                      Account Status
+                    </label>
+
+                    <div className="flex items-center gap-3 rounded-lg border border-gray-300 bg-gray-50 px-4 py-3">
+
+                      <span className="h-2.5 w-2.5 rounded-full bg-green-500"></span>
+
+                      <span className="text-sm font-medium text-gray-700">
+                        Active
+                      </span>
+
+                    </div>
+
+                  </div>
+
                 </div>
 
-              </div>
 
 
-              {/* ROLE */}
+                {/* ================= UPDATE BUTTON ================= */}
 
-              <div>
+                <div className="mt-8 border-t border-gray-200 pt-6">
 
-                <label className="mb-2 block text-sm font-semibold text-white">
-                  Role
-                </label>
+                  <button
+                    className="rounded-lg bg-blue-600 px-7 py-3 text-sm font-semibold text-white transition hover:bg-blue-700"
+                  >
+                    Update Profile
+                  </button>
 
-                <div className="rounded-xl border border-[#333333] bg-[#181818] px-4 py-3 font-medium text-[#dfff4f]">
-                  {user?.role || "Not available"}
                 </div>
 
               </div>
