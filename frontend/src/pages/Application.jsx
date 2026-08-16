@@ -34,7 +34,7 @@ function Application() {
           My Applications
         </h1>
 
-        <p className="mt-2 text-lg text-[#dfff4f]">
+        <p className="mt-2 text-lg text-white">
           Jobs you have applied for.
         </p>
 
