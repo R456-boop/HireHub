@@ -105,92 +105,8 @@ function Jobs() {
             </div>
 
 
-            {/* LOCATION */}
-            <div className="relative">
 
-              <MapPin
-                className="absolute left-5 top-1/2 h-5 w-5 -translate-y-1/2 text-gray-400"
-              />
-
-              <select
-                value={location}
-                onChange={(e) => setLocation(e.target.value)}
-                className="h-16 w-full appearance-none rounded-xl border border-[#333333] bg-[#111111] px-14 text-white outline-none focus:border-[#9b5cff]"
-              >
-
-                <option value="">
-                  Location
-                </option>
-
-                <option value="Delhi">
-                  Delhi
-                </option>
-
-                <option value="Mumbai">
-                  Mumbai
-                </option>
-
-                <option value="Bangalore">
-                  Bangalore
-                </option>
-
-                <option value="Hyderabad">
-                  Hyderabad
-                </option>
-
-                <option value="Remote">
-                  Remote
-                </option>
-
-              </select>
-
-              <ChevronDown
-                className="pointer-events-none absolute right-5 top-1/2 h-5 w-5 -translate-y-1/2 text-gray-400"
-              />
-
-            </div>
-
-
-            {/* JOB TYPE */}
-            <div className="relative">
-
-              <Briefcase
-                className="absolute left-5 top-1/2 h-5 w-5 -translate-y-1/2 text-gray-400"
-              />
-
-              <select
-                value={jobType}
-                onChange={(e) => setJobType(e.target.value)}
-                className="h-16 w-full appearance-none rounded-xl border border-[#333333] bg-[#111111] px-14 text-white outline-none focus:border-[#9b5cff]"
-              >
-
-                <option value="">
-                  Job Type
-                </option>
-
-                <option value="full time">
-                  Full Time
-                </option>
-
-                <option value="part time">
-                  Part Time
-                </option>
-
-                <option value="internship">
-                  Internship
-                </option>
-
-                <option value="contract">
-                  Contract
-                </option>
-
-              </select>
-
-              <ChevronDown
-                className="pointer-events-none absolute right-5 top-1/2 h-5 w-5 -translate-y-1/2 text-gray-400"
-              />
-
-            </div>
+               
 
 
             {/* SEARCH BUTTON */}
@@ -208,37 +124,6 @@ function Jobs() {
           </div>
 
 
-          {/* ========================================= */}
-          {/* JOB COUNT + SORT */}
-          {/* ========================================= */}
-
-          <div className="mt-14 flex items-center justify-between">
-
-            <h2 className="text-xl font-bold text-[#b27aff]">
-              {filteredJobs.length} Jobs Found
-            </h2>
-
-            <div className="flex items-center gap-3">
-
-              <span className="text-sm text-gray-400">
-                Sort by:
-              </span>
-
-              <select
-                className="rounded-xl border border-[#333333] bg-[#111111] px-5 py-3 text-sm text-white outline-none"
-              >
-                <option>
-                  Latest
-                </option>
-
-                <option>
-                  Oldest
-                </option>
-              </select>
-
-            </div>
-
-          </div>
 
 
           {/* ========================================= */}

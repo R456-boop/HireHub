@@ -1,14 +1,27 @@
+
 import Navbar from "./Navbar";
-function Layout({children})
-{
-    return  ( 
-    <>
-     <Navbar/>
-     <main>
+
+function Layout({ children }) {
+  return (
+    <div className="min-h-screen bg-white">
+
+      {/* ================= NAVBAR ================= */}
+
+      <Navbar />
+
+      {/* ================= MAIN CONTENT ================= */}
+
+      <main>
         {children}
-     </main>
-     <footer/>
-        </>
-    );
+      </main>
+
+      {/* ================= FOOTER ================= */}
+
+      <footer>
+      </footer>
+
+    </div>
+  );
 }
+
 export default Layout;

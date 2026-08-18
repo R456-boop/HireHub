@@ -10,9 +10,14 @@ import { setUser } from "../redux/authSlice";
 
 import registerImage from "../assets/register.jpg";
 
+import Toast from "@/components/Toast";
+import { useToast } from "@/hooks/useToast";
+
 function Register() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
+  // ================= STATES =================
 
   const [fullname, setFullname] = useState("");
   const [email, setEmail] = useState("");
@@ -20,28 +25,47 @@ function Register() {
   const [password, setPassword] = useState("");
   const [role, setRole] = useState("student");
 
+  // Loading state
+  const [loading, setLoading] = useState(false);
+
+  // Toast
+  const { toast, showToast, hideToast } = useToast();
+
+  // ================= REGISTER HANDLER =================
+
   const registerHandler = async (e) => {
     e.preventDefault();
 
-    // Password validation
+    // ================= PASSWORD VALIDATION =================
+
     const passwordRegex = /^(?=.*[@#&])(?=.*[0-9]).+$/;
 
     if (!passwordRegex.test(password)) {
-      alert(
-        "Password must contain at least one @, #, or & and one number"
+      showToast(
+        "Password must contain at least one @, #, or & and one number.",
+        "error"
       );
       return;
     }
 
-    // Contact validation
+    // ================= CONTACT VALIDATION =================
+
     const contactRegex = /^[0-9]{10}$/;
 
     if (!contactRegex.test(contact)) {
-      alert("Contact number must contain exactly 10 digits");
+      showToast(
+        "Contact number must contain exactly 10 digits.",
+        "error"
+      );
       return;
     }
 
     try {
+      setLoading(true);
+
+      // Show loading toast
+      showToast("Creating your account...", "loading");
+
       const response = await axiosInstance.post(
         "/api/v1/user/register",
         {
@@ -55,32 +79,51 @@ function Register() {
 
       console.log("Register response:", response.data);
 
+      // ================= SUCCESS =================
+
       if (response.data.success) {
+        // Store user in Redux
         dispatch(setUser(response.data.user));
 
-        alert(response.data.message);
+        // Show success toast
+        showToast(
+          response.data.message || "Registration successful!",
+          "success"
+        );
 
-        // Go directly to home
-        navigate("/");
+        // Navigate to home after short delay
+        setTimeout(() => {
+          navigate("/");
+        }, 1000);
+      } else {
+        showToast(
+          response.data.message || "Registration failed.",
+          "error"
+        );
       }
     } catch (error) {
       console.log("Register error:", error);
 
-      alert(
+      showToast(
         error.response?.data?.message ||
-          "Registration failed"
+          "Registration failed. Please try again.",
+        "error"
       );
+    } finally {
+      setLoading(false);
     }
   };
+
+  // ================= UI =================
 
   return (
     <Layout>
 
-      {/* OUTER PAGE */}
+      {/* ================= OUTER PAGE ================= */}
 
       <div className="min-h-[calc(100vh-70px)] bg-[#a4abb6] px-4 py-8 flex items-center justify-center">
 
-        {/* MAIN CARD */}
+        {/* ================= MAIN CARD ================= */}
 
         <div className="grid w-full max-w-6xl overflow-hidden rounded-[32px] bg-[#f3e9c5] shadow-[0_20px_60px_rgba(0,0,0,0.15)] lg:grid-cols-[0.9fr_1.1fr]">
 
@@ -92,7 +135,7 @@ function Register() {
 
             <div className="w-full max-w-sm">
 
-              {/* LOGO */}
+              {/* ================= LOGO ================= */}
 
               <div className="mb-8">
 
@@ -102,8 +145,7 @@ function Register() {
 
               </div>
 
-
-              {/* HEADING */}
+              {/* ================= HEADING ================= */}
 
               <h2 className="text-4xl font-bold tracking-tight text-gray-900">
                 Create an account
@@ -113,15 +155,14 @@ function Register() {
                 Join HireHub and start your career journey
               </p>
 
-
-              {/* REGISTER FORM */}
+              {/* ================= REGISTER FORM ================= */}
 
               <form
                 onSubmit={registerHandler}
                 className="mt-7 space-y-4"
               >
 
-                {/* FULL NAME */}
+                {/* ================= FULL NAME ================= */}
 
                 <div>
 
@@ -142,8 +183,7 @@ function Register() {
 
                 </div>
 
-
-                {/* EMAIL */}
+                {/* ================= EMAIL ================= */}
 
                 <div>
 
@@ -164,8 +204,7 @@ function Register() {
 
                 </div>
 
-
-                {/* CONTACT */}
+                {/* ================= CONTACT ================= */}
 
                 <div>
 
@@ -195,8 +234,7 @@ function Register() {
 
                 </div>
 
-
-                {/* PASSWORD */}
+                {/* ================= PASSWORD ================= */}
 
                 <div>
 
@@ -221,8 +259,7 @@ function Register() {
 
                 </div>
 
-
-                {/* ROLE */}
+                {/* ================= ROLE ================= */}
 
                 <div>
 
@@ -250,20 +287,21 @@ function Register() {
 
                 </div>
 
-
-                {/* REGISTER BUTTON */}
+                {/* ================= REGISTER BUTTON ================= */}
 
                 <Button
                   type="submit"
-                  className="mt-3 h-12 w-full rounded-full bg-[#ffd45a] text-sm font-semibold text-gray-900 shadow-none transition hover:bg-[#f7c94b]"
+                  disabled={loading}
+                  className="mt-3 h-12 w-full rounded-full bg-[#ffd45a] text-sm font-semibold text-gray-900 shadow-none transition hover:bg-[#f7c94b] disabled:cursor-not-allowed disabled:opacity-70"
                 >
-                  Create Account
+                  {loading
+                    ? "Creating Account..."
+                    : "Create Account"}
                 </Button>
 
               </form>
 
-
-              {/* LOGIN */}
+              {/* ================= LOGIN ================= */}
 
               <p className="mt-6 text-center text-sm text-gray-600">
 
@@ -283,95 +321,106 @@ function Register() {
 
           </div>
 
-{/* ================================= */}
-{/* RIGHT SIDE - IMAGE */}
-{/* ================================= */}
+          {/* ================================= */}
+          {/* RIGHT SIDE - IMAGE */}
+          {/* ================================= */}
 
-<div className="relative hidden min-h-[720px] bg-[#f3e9c5] p-5 lg:block">
+          <div className="relative hidden min-h-[720px] bg-[#f3e9c5] p-5 lg:block">
 
-  {/* IMAGE CONTAINER */}
+            {/* IMAGE CONTAINER */}
 
-  <div className="relative h-full overflow-hidden rounded-[3rem]">
+            <div className="relative h-full overflow-hidden rounded-[3rem]">
 
-    <img
-      src={registerImage}
-      alt="Join HireHub"
-      className="absolute inset-0 h-full w-full object-cover object-center"
-    />
+              <img
+                src={registerImage}
+                alt="Join HireHub"
+                className="absolute inset-0 h-full w-full object-cover object-center"
+              />
 
-    {/* Slight overlay */}
+              {/* Slight overlay */}
 
-    <div className="absolute inset-0 bg-black/5" />
+              <div className="absolute inset-0 bg-black/5" />
 
-    {/* ================================= */}
-    {/* TOP RIGHT CURVED X BUTTON */}
-    {/* ================================= */}
+              {/* ================================= */}
+              {/* TOP RIGHT CURVED X BUTTON */}
+              {/* ================================= */}
 
-   {/* TOP RIGHT CURVED X BUTTON */}
+              <div className="absolute right-0 top-0 z-20">
 
-<div className="absolute right-0 top-0 z-20">
+                {/* Yellow corner */}
 
-  {/* Yellow corner */}
-  <div className="absolute -right-1 -top-1 h-28 w-28 rounded-bl-[55px] bg-[#f3e9c5]" />
+                <div className="absolute -right-1 -top-1 h-28 w-28 rounded-bl-[55px] bg-[#f3e9c5]" />
 
-  {/* White circular X */}
-  <button
-    type="button"
-    className="relative z-10 flex h-14 w-14 items-center justify-center rounded-full bg-white text-2xl font-light text-gray-800 shadow-sm transition hover:scale-105"
-  >
-    ×
-  </button>
+                {/* White circular X */}
 
-</div>
+                <button
+                  type="button"
+                  onClick={() => navigate("/login")}
+                  className="relative z-10 flex h-14 w-14 items-center justify-center rounded-full bg-white text-2xl font-light text-gray-800 shadow-sm transition hover:scale-105"
+                >
+                  ×
+                </button>
 
-    </div>
+              </div>
 
+              {/* ================================= */}
+              {/* TOP LEFT BADGE */}
+              {/* ================================= */}
 
-    {/* ================================= */}
-    {/* TOP LEFT BADGE */}
-    {/* ================================= */}
+              <div className="absolute left-8 top-8 rounded-full bg-white/90 px-5 py-2 text-sm font-medium text-gray-800 backdrop-blur-sm">
+                Build your future
+              </div>
 
-    <div className="absolute left-8 top-8 rounded-full bg-white/90 px-5 py-2 text-sm font-medium text-gray-800 backdrop-blur-sm">
-      Build your future
-    </div>
+              {/* ================================= */}
+              {/* BOTTOM TEXT */}
+              {/* ================================= */}
 
+              <div className="absolute bottom-10 left-8 right-8">
 
-    {/* ================================= */}
-    {/* BOTTOM TEXT */}
-    {/* ================================= */}
+                <h2 className="text-4xl font-bold leading-tight text-white">
+                  Your next opportunity
+                  <br />
+                  starts here.
+                </h2>
 
-    <div className="absolute bottom-10 left-8 right-8">
+                <p className="mt-4 max-w-md text-sm leading-6 text-white/90">
+                  Discover exciting opportunities, connect
+                  with companies and take the next step
+                  toward your career.
+                </p>
 
-      <h2 className="text-4xl font-bold leading-tight text-white">
-        Your next opportunity
-        <br />
-        starts here.
-      </h2>
+                <div className="mt-6 w-fit rounded-2xl bg-white/90 px-5 py-4 shadow-lg backdrop-blur-sm">
 
-      <p className="mt-4 max-w-md text-sm leading-6 text-white/90">
-        Discover exciting opportunities, connect
-        with companies and take the next step
-        toward your career.
-      </p>
+                  <p className="text-xs text-gray-500">
+                    Start your journey
+                  </p>
 
-      <div className="mt-6 w-fit rounded-2xl bg-white/90 px-5 py-4 shadow-lg backdrop-blur-sm">
+                  <p className="mt-1 text-sm font-semibold text-gray-900">
+                    Find jobs. Build your career.
+                  </p>
 
-        <p className="text-xs text-gray-500">
-          Start your journey
-        </p>
+                </div>
 
-        <p className="mt-1 text-sm font-semibold text-gray-900">
-          Find jobs. Build your career.
-        </p>
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+        {/* ================= TOAST ================= */}
+
+        {toast && (
+          <Toast
+            message={toast.message}
+            type={toast.type}
+            onClose={hideToast}
+          />
+        )}
 
       </div>
 
-    </div>
-
-  </div>
-
-</div>
-</div>
     </Layout>
   );
 }
