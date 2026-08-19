@@ -99,7 +99,7 @@ function Login() {
 
               <div className="flex items-center gap-2">
 
-                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-600 shadow-md">
+                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#b78bea] shadow-md">
 
                   <span className="text-lg font-bold text-white">
                     H
@@ -113,7 +113,7 @@ function Login() {
                     Hire
                   </span>
 
-                  <span className="text-blue-600">
+                  <span className="text-[#b78bea]">
                     Hub
                   </span>
 
@@ -153,7 +153,7 @@ function Login() {
                     onChange={(e) =>
                       setEmail(e.target.value)
                     }
-                    className="h-12 rounded-xl border-gray-200 bg-gray-50 px-4 text-sm shadow-none transition focus:border-blue-500 focus:bg-white focus:ring-2 focus:ring-blue-100"
+                    className="h-12 rounded-xl border-gray-200 bg-gray-50 px-4 text-sm shadow-none transition focus:border-[#b78bea] focus:bg-white focus:ring-2 focus:ring-[#b78bea]/20"
                   />
 
                 </div>
@@ -170,7 +170,7 @@ function Login() {
 
                     <button
                       type="button"
-                      className="text-xs font-medium text-blue-600 hover:underline"
+                      className="text-xs font-medium text-[#b78bea] hover:underline"
                     >
                       Forgot password?
                     </button>
@@ -184,7 +184,7 @@ function Login() {
                     onChange={(e) =>
                       setPassword(e.target.value)
                     }
-                    className="h-12 rounded-xl border-gray-200 bg-gray-50 px-4 text-sm shadow-none transition focus:border-blue-500 focus:bg-white focus:ring-2 focus:ring-blue-100"
+                    className="h-12 rounded-xl border-gray-200 bg-gray-50 px-4 text-sm shadow-none transition focus:border-[#b78bea] focus:bg-white focus:ring-2 focus:ring-[#b78bea]/20"
                   />
 
                 </div>
@@ -209,7 +209,7 @@ function Login() {
                 <Button
                   type="submit"
                   disabled={loading}
-                  className="h-12 w-full rounded-xl bg-blue-600 text-sm font-semibold shadow-sm transition hover:bg-blue-700 hover:shadow-md disabled:cursor-not-allowed disabled:opacity-70"
+                  className="h-12 w-full rounded-xl bg-[#b78bea] text-sm font-semibold shadow-sm transition hover:bg-[#a970df] hover:shadow-md disabled:cursor-not-allowed disabled:opacity-70"
                 >
                   {loading ? "Logging in..." : "Login"}
                 </Button>
@@ -225,7 +225,7 @@ function Login() {
                 <button
                   type="button"
                   onClick={() => navigate("/register")}
-                  className="font-semibold text-blue-600 hover:underline"
+                  className="font-semibold text-[#b78bea] hover:underline"
                 >
                   Sign Up
                 </button>
