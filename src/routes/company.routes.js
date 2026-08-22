@@ -1,5 +1,5 @@
 import express from "express";
- import { registerCompany ,getCompany,getCompanybyId,updateComapny} from "../controllers/company.controllers.js";
+ import { registerCompany ,getCompany,getCompanybyId,updateCompany} from "../controllers/company.controllers.js";
  import { isAuthenticated } from "../middleware/isauthenticated.js";
   
  const router=express.Router();
@@ -8,7 +8,7 @@ import express from "express";
  router.route("/register").post(isAuthenticated,registerCompany)
  // not everyone can crreate a company only whod=se who are authenticated 
 router.route("/get/:id").get(isAuthenticated,getCompanybyId)
-router.route("/update/:id").put(isAuthenticated, updateComapny);
+router.route("/update/:id").put(isAuthenticated, updateCompany);
  export default router
 
 //  Am I getting data?

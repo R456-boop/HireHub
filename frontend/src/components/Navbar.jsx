@@ -176,12 +176,12 @@ function Navbar() {
 
             {user ? (
               <Button
-                type="button"
-                onClick={() => setShowLogoutPopup(true)}
-                className="ml-1 h-7 rounded-lg border border-white/[0.1] bg-white/[0.06] px-3 text-[10px] font-normal text-gray-300 shadow-none transition hover:bg-[#b78bea]/15 hover:text-white"
-              >
-                Logout
-              </Button>
+  type="button"
+  onClick={() => setShowLogoutPopup(true)}
+  className="ml-1 h-9 rounded-lg border border-white/[0.1] bg-white/[0.06] px-4 text-sm font-medium text-gray-300 shadow-none transition hover:bg-[#b78bea]/15 hover:text-white"
+>
+  Logout
+</Button>
             ) : (
               <div className="ml-1 flex items-center gap-1">
 

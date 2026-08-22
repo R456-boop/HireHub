@@ -2,13 +2,11 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
-import Layout from "../components/Layout";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+
 import axiosInstance from "../utils/axios";
 import { setUser } from "../redux/authSlice";
-
-import loginImage from "../assets/login.jpg";
 
 import Toast from "@/components/Toast";
 import { useToast } from "@/hooks/useToast";
@@ -16,8 +14,6 @@ import { useToast } from "@/hooks/useToast";
 function Login() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
-  // ================= STATES =================
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -30,7 +26,6 @@ function Login() {
   const loginHandler = async (e) => {
     e.preventDefault();
 
-    // Basic validation
     if (!email || !password) {
       showToast("Please enter email and password.", "error");
       return;
@@ -39,7 +34,6 @@ function Login() {
     try {
       setLoading(true);
 
-      // Loading toast
       showToast("User is signing in...", "loading");
 
       const response = await axiosInstance.post(
@@ -51,13 +45,10 @@ function Login() {
       );
 
       if (response.data.success) {
-        // Store user in Redux
         dispatch(setUser(response.data.user));
 
-        // Success message
         showToast("Login successful!", "success");
 
-        // Navigate after short delay
         setTimeout(() => {
           navigate("/");
         }, 800);
@@ -80,212 +71,257 @@ function Login() {
     }
   };
 
-  // ================= UI =================
-
   return (
-    <Layout>
+    <div className="relative min-h-screen overflow-hidden bg-[#11021f] px-4 py-10">
 
-      <div className="min-h-[calc(100vh-70px)] bg-[#f7f7f5] px-4 py-8 flex items-center justify-center">
+      {/* ================= BACKGROUND GLOW ================= */}
 
-        <div className="grid w-full max-w-5xl overflow-hidden rounded-[32px] bg-white shadow-[0_20px_60px_rgba(0,0,0,0.08)] lg:grid-cols-[0.9fr_1.1fr]">
+      <div className="absolute inset-0 overflow-hidden">
 
-          {/* ================= LEFT SIDE ================= */}
+        {/* Top purple glow */}
+        <div className="absolute -right-32 -top-32 h-[500px] w-[500px] rounded-full bg-purple-500/30 blur-[120px]" />
 
-          <div className="flex items-center justify-center px-8 py-12 sm:px-12 lg:px-14">
+        {/* Left middle glow */}
+        <div className="absolute -left-48 top-1/3 h-[500px] w-[500px] rounded-full bg-purple-700/30 blur-[130px]" />
 
-            <div className="w-full max-w-sm">
+        {/* Bottom glow */}
+        <div className="absolute -bottom-40 right-1/4 h-[500px] w-[500px] rounded-full bg-violet-600/30 blur-[150px]" />
 
-              {/* LOGO */}
 
-              <div className="flex items-center gap-2">
+        {/* Abstract purple curved shapes */}
 
-                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#b78bea] shadow-md">
+        <div className="absolute -right-32 top-10 h-[500px] w-[500px] rotate-[25deg] rounded-[100px] border border-purple-300/40 bg-gradient-to-br from-purple-400/30 via-purple-900/10 to-transparent shadow-[0_0_80px_rgba(168,85,247,0.5)] blur-[1px]" />
 
-                  <span className="text-lg font-bold text-white">
-                    H
-                  </span>
+        <div className="absolute -left-52 top-[280px] h-[700px] w-[500px] rotate-[28deg] rounded-[120px] border border-purple-400/30 bg-gradient-to-r from-purple-600/30 via-transparent to-purple-300/20 shadow-[0_0_100px_rgba(139,92,246,0.4)]" />
 
-                </div>
+        <div className="absolute bottom-[-250px] left-[15%] h-[550px] w-[750px] rotate-[20deg] rounded-[150px] border border-purple-300/20 bg-gradient-to-tr from-purple-700/40 via-purple-500/10 to-transparent blur-[1px]" />
 
-                <h1 className="text-3xl font-extrabold tracking-tight">
+      </div>
 
-                  <span className="text-gray-900">
-                    Hire
-                  </span>
 
-                  <span className="text-[#b78bea]">
-                    Hub
-                  </span>
+      {/* ================= LOGIN CARD ================= */}
 
-                </h1>
+      <div className="relative z-10 flex min-h-[calc(100vh-80px)] items-center justify-center">
+
+        <div
+          className="
+            relative
+            w-full
+            max-w-[620px]
+            overflow-hidden
+            rounded-[38px]
+            border
+            border-white/20
+            bg-[#160526]/55
+            px-8
+            py-12
+            shadow-[0_0_80px_rgba(124,58,237,0.25)]
+            backdrop-blur-2xl
+            sm:px-12
+            sm:py-14
+          "
+        >
+
+          {/* Card glow */}
+
+          <div className="absolute inset-0 bg-gradient-to-br from-white/[0.08] via-transparent to-purple-500/[0.08]" />
+
+          <div className="relative mx-auto w-full max-w-[470px]">
+
+
+            {/* ================= LOGO ================= */}
+
+            <div className="flex flex-col items-center">
+
+              <div className="relative mb-4 h-14 w-14">
+
+                <div className="absolute left-1 top-0 h-8 w-4 rotate-45 rounded-full bg-gradient-to-b from-[#d8b4fe] to-[#7c3aed] shadow-[0_0_20px_rgba(192,132,252,0.7)]" />
+
+                <div className="absolute bottom-0 right-1 h-8 w-4 rotate-45 rounded-full bg-gradient-to-b from-[#a78bfa] to-[#6d28d9] shadow-[0_0_20px_rgba(139,92,246,0.7)]" />
 
               </div>
 
-              {/* HEADING */}
 
-              <h2 className="mt-8 text-4xl font-bold tracking-tight text-gray-900">
+              <h1 className="text-xl font-medium tracking-wide text-white/85">
+                HireHub
+              </h1>
+
+              <h2 className="mt-10 text-center text-3xl font-semibold tracking-wide text-white sm:text-4xl">
                 Welcome Back
               </h2>
 
-              <p className="mt-2 text-sm text-gray-500">
-                Let's login to continue your journey
-              </p>
-
-              {/* LOGIN FORM */}
-
-              <form
-                onSubmit={loginHandler}
-                className="mt-8 space-y-5"
-              >
-
-                {/* EMAIL */}
-
-                <div>
-
-                  <label className="mb-2 block text-sm font-semibold text-gray-700">
-                    Email
-                  </label>
-
-                  <Input
-                    type="email"
-                    placeholder="Enter your email"
-                    value={email}
-                    onChange={(e) =>
-                      setEmail(e.target.value)
-                    }
-                    className="h-12 rounded-xl border-gray-200 bg-gray-50 px-4 text-sm shadow-none transition focus:border-[#b78bea] focus:bg-white focus:ring-2 focus:ring-[#b78bea]/20"
-                  />
-
-                </div>
-
-                {/* PASSWORD */}
-
-                <div>
-
-                  <div className="mb-2 flex items-center justify-between">
-
-                    <label className="text-sm font-semibold text-gray-700">
-                      Password
-                    </label>
-
-                    <button
-                      type="button"
-                      className="text-xs font-medium text-[#b78bea] hover:underline"
-                    >
-                      Forgot password?
-                    </button>
-
-                  </div>
-
-                  <Input
-                    type="password"
-                    placeholder="Enter your password"
-                    value={password}
-                    onChange={(e) =>
-                      setPassword(e.target.value)
-                    }
-                    className="h-12 rounded-xl border-gray-200 bg-gray-50 px-4 text-sm shadow-none transition focus:border-[#b78bea] focus:bg-white focus:ring-2 focus:ring-[#b78bea]/20"
-                  />
-
-                </div>
-
-                {/* REMEMBER ME */}
-
-                <div className="flex items-center gap-2">
-
-                  <input
-                    type="checkbox"
-                    className="h-4 w-4 rounded border-gray-300"
-                  />
-
-                  <span className="text-sm text-gray-500">
-                    Remember me
-                  </span>
-
-                </div>
-
-                {/* LOGIN BUTTON */}
-
-                <Button
-                  type="submit"
-                  disabled={loading}
-                  className="h-12 w-full rounded-xl bg-[#b78bea] text-sm font-semibold shadow-sm transition hover:bg-[#a970df] hover:shadow-md disabled:cursor-not-allowed disabled:opacity-70"
-                >
-                  {loading ? "Logging in..." : "Login"}
-                </Button>
-
-              </form>
-
-              {/* SIGN UP */}
-
-              <p className="mt-8 text-center text-sm text-gray-500">
-
-                Don't have an account?{" "}
-
-                <button
-                  type="button"
-                  onClick={() => navigate("/register")}
-                  className="font-semibold text-[#b78bea] hover:underline"
-                >
-                  Sign Up
-                </button>
-
-              </p>
-
             </div>
 
-          </div>
 
-          {/* ================= RIGHT SIDE ================= */}
+            {/* ================= FORM ================= */}
 
-          <div className="relative hidden min-h-[650px] p-5 lg:block">
+            <form
+              onSubmit={loginHandler}
+              className="mt-12 space-y-6"
+            >
 
-            <div className="relative h-full overflow-hidden rounded-[3rem]">
 
-              <img
-                src={loginImage}
-                alt="Find your dream job"
-                className="h-full w-full object-cover object-center"
-              />
+              {/* EMAIL */}
 
-              <div className="absolute inset-0 bg-black/10" />
+              <div>
 
-              {/* IMAGE TEXT */}
+                <label className="mb-2 block text-sm font-medium text-white/75">
+                  Email address
+                </label>
 
-              <div className="absolute left-8 right-8 top-8">
-
-                <h2 className="text-3xl font-bold leading-tight text-white">
-                  Find your dream job
-                  <br />
-                  and build your future.
-                </h2>
-
-                <p className="mt-3 max-w-sm text-sm leading-6 text-white/90">
-                  Discover exciting opportunities and connect
-                  with companies looking for talented people.
-                </p>
+                <Input
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="
+                    h-14
+                    rounded-xl
+                    border
+                    border-white/50
+                    bg-white/[0.03]
+                    px-4
+                    text-white
+                    placeholder:text-white/30
+                    shadow-none
+                    transition
+                    focus:border-purple-300
+                    focus:ring-2
+                    focus:ring-purple-400/30
+                  "
+                />
 
               </div>
 
-            </div>
+
+              {/* PASSWORD */}
+
+              <div>
+
+                <label className="mb-2 block text-sm font-medium text-white/75">
+                  Password
+                </label>
+
+                <Input
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className="
+                    h-14
+                    rounded-xl
+                    border
+                    border-white/50
+                    bg-white/[0.03]
+                    px-4
+                    text-white
+                    placeholder:text-white/30
+                    shadow-none
+                    transition
+                    focus:border-purple-300
+                    focus:ring-2
+                    focus:ring-purple-400/30
+                  "
+                />
+
+              </div>
+
+
+              {/* FORGOT PASSWORD */}
+
+              <div className="-mt-1">
+
+                <button
+                  type="button"
+                  className="
+                    text-sm
+                    text-white/70
+                    transition
+                    hover:text-purple-300
+                  "
+                >
+                  Forgot Password ?
+                </button>
+
+              </div>
+
+
+              {/* LOGIN BUTTON */}
+
+              <Button
+                type="submit"
+                disabled={loading}
+                className="
+                  mt-3
+                  h-14
+                  w-full
+                  rounded-xl
+                  border
+                  border-purple-200/70
+                  bg-gradient-to-r
+                  from-[#8156d1]
+                  via-[#a579e3]
+                  to-[#7d55c9]
+                  text-lg
+                  font-medium
+                  tracking-[0.15em]
+                  text-white
+                  shadow-[0_0_30px_rgba(168,85,247,0.35)]
+                  transition-all
+                  duration-300
+                  hover:scale-[1.01]
+                  hover:from-[#9267e0]
+                  hover:via-[#b98bf0]
+                  hover:to-[#8f63dc]
+                  hover:shadow-[0_0_45px_rgba(192,132,252,0.55)]
+                  disabled:cursor-not-allowed
+                  disabled:opacity-70
+                "
+              >
+                {loading ? "LOGGING IN..." : "Login"}
+              </Button>
+
+            </form>
+
+
+            {/* ================= SIGN UP ================= */}
+
+            <p className="mt-16 text-center text-sm text-white/60">
+
+              Are You New Member ?
+
+              <button
+                type="button"
+                onClick={() => navigate("/register")}
+                className="
+                  ml-1
+                  font-semibold
+                  text-white
+                  transition
+                  hover:text-purple-300
+                "
+              >
+                Sign UP
+              </button>
+
+            </p>
 
           </div>
 
         </div>
 
-        {/* ================= TOAST ================= */}
-
-        {toast && (
-          <Toast
-            message={toast.message}
-            type={toast.type}
-            onClose={hideToast}
-          />
-        )}
-
       </div>
 
-    </Layout>
+
+      {/* ================= TOAST ================= */}
+
+      {toast && (
+        <Toast
+          message={toast.message}
+          type={toast.type}
+          onClose={hideToast}
+        />
+      )}
+
+    </div>
   );
 }
 

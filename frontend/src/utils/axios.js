@@ -1,6 +1,6 @@
 import axios from "axios";
 const axiosInstance = axios.create({
-    baseURL: "http://localhost:8000",
+    baseURL: "https://hire-hub-rust.vercel.app",
     withCredentials: true
 });
 export default axiosInstance;

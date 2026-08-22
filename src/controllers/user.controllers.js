@@ -209,20 +209,31 @@ export const logout = async (req, res) => {
 };
 
 
-
 // ================= UPDATE PROFILE =================
 
 export const updateProfile = async (req, res) => {
     try {
 
-        const { fullname, email, contact } = req.body;
+        const {
+            fullname,
+            email,
+            contact,
+            location,
+            profilePhoto
+        } = req.body;
+
+
+        // ================= REQUIRED FIELDS =================
 
         if (!fullname || !email || !contact) {
             return res.status(400).json({
-                message: "All fields are required",
+                message: "Full name, email and contact are required",
                 success: false
             });
         }
+
+
+        // ================= CONTACT VALIDATION =================
 
         const contactRegex = /^[0-9]{10}$/;
 
@@ -232,6 +243,9 @@ export const updateProfile = async (req, res) => {
                 success: false
             });
         }
+
+
+        // ================= CHECK EMAIL =================
 
         const existingUser = await User.findOne({
             email,
@@ -245,12 +259,17 @@ export const updateProfile = async (req, res) => {
             });
         }
 
+
+        // ================= UPDATE USER =================
+
         const user = await User.findByIdAndUpdate(
             req.id,
             {
                 fullname: fullname,
                 email: email,
-                contact: contact
+                contact: contact,
+                location: location || "",
+                profilePhoto: profilePhoto || ""
             },
             {
                 new: true,
@@ -258,12 +277,18 @@ export const updateProfile = async (req, res) => {
             }
         ).select("-password");
 
+
+        // ================= USER NOT FOUND =================
+
         if (!user) {
             return res.status(404).json({
                 message: "User not found",
                 success: false
             });
         }
+
+
+        // ================= RESPONSE =================
 
         return res.status(200).json({
             message: "Profile updated successfully",
@@ -273,7 +298,10 @@ export const updateProfile = async (req, res) => {
 
     } catch (error) {
 
-        console.log("Error while updating profile:", error);
+        console.log(
+            "Error while updating profile:",
+            error
+        );
 
         return res.status(500).json({
             message: "Internal server error",

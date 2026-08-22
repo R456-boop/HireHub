@@ -19,14 +19,20 @@ import mongoose from "mongoose";
     type:Number,
     required:true
    },
-   image:{
+   profilePhoto:{
     type:String,
+    default:""
    },
    role:{
     type:String,
     enum:["student","recruiter"],
     required:true
-   }
+   },
+
+    location: {
+      type: String,
+      default: "",
+    },
    
 
  },{timestamps:true});
